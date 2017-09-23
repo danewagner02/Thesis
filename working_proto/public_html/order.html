@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!--
+  Practical 1
+  RW334 Prac Memos
+  Stellenbosch University
+
+  Author: Robert Sandell
+          16726723@sun.ac.za
+
+  Description:
+       The html structure for
+       the client site order page.
+-->
+<html>
+    <head>
+        <title>Trinkets Inc.</title>
+        <link rel="stylesheet" type="text/css" href="client.css">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta http-equiv="cleartype" content="on">
+        <meta name="MobileOptimized" content="320">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <script src="jquery-1.12.1.min.js"></script>
+        <script src="site-scripts.js"></script>
+    </head>
+    <body>
+        <div class="client order">
+            <div class="header">
+                <div class="wrapper">
+                    <img class="headerImage" src="logo.png" />
+                </div>
+            </div>
+            <div class="menu">
+                <div class="wrapper">
+                    <button class="menuToggle">
+                        <span class="menuButton top"></span>
+                        <span class="menuButton mid"></span>
+                        <span class="menuButton bot"></span>
+                    </button>
+                    <ul class="menuList">
+                        <li class="menuItem">
+                            <a class="menuLink" href="home.html">
+                                <span class="menuBorder">Home</span>
+                            </a>
+                        </li>
+                        <li class="menuItem">
+                            <a class="menuLink" href="Satellites.html">
+                                <span class="menuBorder">Satellites</span>
+                            </a>
+                        </li>
+                        <li class="menuItem">
+                            <a class="menuLink selected" href="order.html">
+                                <span class="menuBorder">Order</span>
+                            </a>
+                        </li>
+                        <li class="menuItem">
+                            <a class="menuLink" href="contact.html">
+                                <span class="menuBorder">Contact</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                <div class="wrapper">
+                    <h1 class="pageHeading">Order</h1>
+                    <form id="orderForm" action="order.html" method="post">
+                        <div class="orderDetails">
+                            <div class="orderText">
+                                <p class="contentParagraph">Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Mauris egestas lacinia arcu
+                                facilisis leo. Nam interdum elit id orci venenatis
+                                et malesuada fames ac turpis egestas.</p>
+                            </div>
+                            <div class="detailFields">
+                                <div class="detailField">
+                                    Firstname:
+                                    <input class="detailInput firstname" type="text" />
+                                </div>
+                                <div class="detailField">
+                                    Lastname:
+                                    <input class="detailInput lastname" type="text" />
+                                </div>
+                                <div class="detailField">
+                                    Email:
+                                    <input class="detailInput email" type="email" />
+                                </div>
+                                <div class="detailField">
+                                    Phone Number:
+                                    <input class="detailInput phone" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="orderItems">
+                            <div class="orderHeading">
+                                <div class="orderItem title">Items</div>
+                                <div class="orderQuantity title">Quantity</div>
+                            </div>
+                            <div class="orderItemRow">
+                                <div class="orderItem">Example Long Item Item</div>
+                                <div class="orderQuantity">
+                                    <button class="orderButton left">-</button>
+                                    <input class="orderNumber" name="item1quantity" type="number" value="2" />
+                                    <button class="orderButton right">+</button>
+                                </div>
+                            </div>
+                            <div class="orderItemRow">
+                                <div class="orderItem">Example and another ad Item</div>
+                                <div class="orderQuantity">
+                                    <button class="orderButton left">-</button>
+                                    <input class="orderNumber" name="item2quantity" type="number" value="4" />
+                                    <button class="orderButton right">+</button>
+                                </div>
+                            </div>
+                            <div class="orderItemRow">
+                                <div class="orderItem">Example then we go Item</div>
+                                <div class="orderQuantity">
+                                    <button class="orderButton left">-</button>
+                                    <input class="orderNumber" name="item3quantity" type="number" value="3" />
+                                    <button class="orderButton right">+</button>
+                                </div>
+                            </div>
+                            <div class="orderItemRow">
+                                <div class="orderItem">Example Item</div>
+                                <div class="orderQuantity">
+                                    <button class="orderButton left">-</button>
+                                    <input class="orderNumber" name="item4quantity" type="number" value="7" />
+                                    <button class="orderButton right">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="orderPlacement">
+                            <input class="orderButton" type="submit" value="Place Order" />
+                        </div>
+                    </form>
+                    <div class="recommendedSatellitess">
+                        <h2 class="pageHeading">Recommended Satellitess</h2>
+                        <ul class="SatellitesList">
+                            <li class="SatellitesItem">
+                                <a class="SatellitesLink" href="Satellites.html?id=1">
+                                    <img class="SatellitesImage" src="images/28.jpg" />
+                                </a>
+                            </li>
+                            <li class="SatellitesItem">
+                                <a class="SatellitesLink" href="Satellites.html?id=1">
+                                    <img class="SatellitesImage" src="images/29.jpg" />
+                                </a>
+                            </li>
+                            <li class="SatellitesItem">
+                                <a class="SatellitesLink" href="Satellites.html?id=1">
+                                    <img class="SatellitesImage" src="images/30.jpg" />
+                                </a>
+                            </li>
+                            <li class="SatellitesItem">
+                                <a class="SatellitesLink" href="Satellites.html?id=1">
+                                    <img class="SatellitesImage" src="images/31.jpg" />
+                                </a>
+                            </li>
+                            <li class="SatellitesItem">
+                                <a class="SatellitesLink" href="Satellites.html?id=1">
+                                    <img class="SatellitesImage" src="images/32.jpg" />
+                                </a>
+                            </li>
+                            <li class="SatellitesItem">
+                                <a class="SatellitesLink" href="Satellites.html?id=1">
+                                    <img class="SatellitesImage" src="images/33.jpg" />
+                                </a>
+                            </li>
+                            <li class="SatellitesItem">
+                                <a class="SatellitesLink" href="Satellites.html?id=1">
+                                    <img class="SatellitesImage" src="images/34.jpg" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="wrapper">
+                    <div class="textLeft">All Rights Reserved.</div>
+                    <div class="logoCenter"><img class="footerImage" src="logo.png" /></div>
+                    <div class="textRight">2016 &copy; Trinkets Inc.</div>
+                </div>
+            </div>
+            <div class="background"></div>
+        </div>
+    </body>
+</html>

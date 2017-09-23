@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/data.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <!-- Additional files for the Highslide popup effect -->
+        <script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
+        <script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" />
+
+
+
+      </head>
+      <body>
+     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+     <script>
+     var satID = "sat1";
+     var satIDisSet = 0;
+     //this is for cookie handeling
+     function checkCookie()
+     {
+         satID = getCookie("satIdQ");
+         if (satID != "")
+         {
+          //document.cookie = "satIdQ=John Doe";
+          satIDisSet=1;
+         }
+      }
+
+     </script>
+
+     <script>
+     var oReq = new XMLHttpRequest(); //New request object
+     oReq.onload = function()
+     {
+       var csv = this.responseText;
+       Highcharts.chart('container',
+                {
+                  data: {csv: csv},
+                  chart: {type: 'spline'},
+                  title: {text: 'Volage'},
+                  xAxis: {},
+                  yAxis: { title: {text: "Volage"}},
+                  tooltip: {shared: true,crosshairs: true},
+                  series: [{ name: 'Voltage',lineWidth: 4,marker: {radius: 6} }]
+                 });
+
+      };
+      //oReq.open("get", "http://localhost/working_proto/public_html/graphs.php", true);
+      oReq.open("get", "http://localhost/working_proto/public_html/graphs.php?sID="+satID, true);
+      oReq.send();
+     	</script>
+
+  </body>
+</html>

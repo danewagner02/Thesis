@@ -1,0 +1,88 @@
+/**
+ * Practical 1
+ * RW334 Prac Memos
+ * Stellenbosch University
+ *
+ * Author: Robert Sandell
+ *         16726723@sun.ac.za
+ *
+ * Description:
+ *      The styling for displaying
+ *      the details that customers
+ *      can use to get in contact
+ *      with the company.
+ **/
+
+
+.contactDetails {
+    font-size: 0;
+    overflow: auto;
+
+    .detailFields {
+        float: left;
+        display: inline-block;
+        width: 50%;
+        padding: 10px 0 0 0;
+        font-size: @default-font-size;
+
+        .detailField {
+            height: 25px;
+            padding: 7px 0 5px 0;
+            text-align: right;
+            color: @content-dk;
+            font-weight: bold;
+
+            .detail {
+                float: right;
+                width: 50%;
+                padding: 0 7px;
+                margin: 0 0 0 10px;
+                border: none;
+                text-align: left;
+                background-color: @content-fg;
+                font-weight: normal;
+
+                &:focus {
+                    background-color: white;
+                }
+
+                .detailLink {
+                    color: @content-dk;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width: 700px) {
+    .contactDetails .detailFields {
+        width: 100%;
+    }
+}
+
+
+@media only screen and (max-width: 400px) {
+    .contactDetails .detailFields .detailField {
+        height: auto;
+        padding: 0;
+        text-align: left;
+
+        .detail {
+            float: none;
+            width: 100%;
+            padding: 0;
+            margin: 10px 0;
+        }
+    }
+}
+
+
+/**
+ * EOF
+ **/

@@ -1,0 +1,117 @@
+/**
+ * Practical 1
+ * RW334 Prac Memos
+ * Stellenbosch University
+ *
+ * Author: Robert Sandell
+ *         16726723@sun.ac.za
+ *
+ * Description:
+ *      A style sheet for the client 
+ *      website, so that specific 
+ *      styles for template contents 
+ *      can be seperated away from 
+ *      the admin website.
+ *
+ *      Each of the possible client 
+ *      pages, and global style sheet
+ *      are imported together here, to 
+ *      create a single CSS file to 
+ *      export to the browser.
+ **/
+
+
+@import "global.less";
+
+.client {
+    min-height: 100%;
+}
+
+@media only screen and (max-width: 900px) {
+    .wrapper {
+        width: auto !important;
+    }
+}
+
+.menuToggle {
+    display: none;
+}
+@media only screen and (max-width: 500px) {
+    .menu {
+        .menuItem {
+            display: block !important;
+
+            .menuLink {
+                padding: 0 0 10px 30px !important;
+
+                .menuBorder {
+                    border-top: 1px solid fade(@accent-bg, 50%);
+                    border-left: none !important;
+                    padding: 10px 2px 0 0 !important;
+                }
+            }
+        }
+        .menuToggle {
+            display: block;
+            width: 100%;
+            padding: 13px 0 13px 30px;
+            box-sizing: border-box;
+            border: none;
+            background: transparent;
+            text-align: left;
+            cursor: pointer;
+
+            &:hover .menuButton {
+                background-color: @header-bg;
+            }
+
+            .menuButton {
+                display: block;
+                width: 20px;
+                margin: 0 0 6px 0; 
+                height: 2px;
+                background-color: @content-fg;
+                .materialShadow;
+
+                &.bot {
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    .footer .wrapper {
+        padding: 24px 0 !important;
+        .textLeft,
+        .logoCenter,
+        .textRight {
+            display: block !important;
+        }
+        .logoCenter .footerImage {
+            margin: 5px !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .header .wrapper {
+        height: auto !important;
+
+        .headerImage {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+
+
+@import "home.less";
+@import "products.less";
+@import "product.less";
+@import "order.less";
+@import "contact.less";
+
+
+/**
+ * EOF
+ **/

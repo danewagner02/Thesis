@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+  Practical 1
+  RW334 Prac Memos
+  Stellenbosch University
+
+  Author: Robert Sandell
+          16726723@sun.ac.za
+
+  Description:
+       The html structure for
+       the client site satellites page.
+-->
+<html>
+    <head>
+        <title>Trinkets Inc.</title>
+        <meta name="msapplication-tap-highlight" content="no">
+        <link rel="stylesheet" type="text/css" href="client.css">
+        <meta http-equiv="cleartype" content="on">
+        <meta name="MobileOptimized" content="320">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <script src="jquery-1.12.1.min.js"></script>
+        <script src="site-scripts.js"></script>
+    </head>
+    <body>
+        <div class="client satellites">
+            <div class="header">
+                <div class="wrapper">
+                    <img class="headerImage" src="logo.png" />
+                </div>
+            </div>
+            <div class="menu">
+                <div class="wrapper">
+                    <button class="menuToggle">
+                        <span class="menuButton top"></span>
+                        <span class="menuButton mid"></span>
+                        <span class="menuButton bot"></span>
+                    </button>
+                    <ul class="menuList">
+                        <li class="menuItem">
+                            <a class="menuLink" href="home.html">
+                                <span class="menuBorder">Home</span>
+                            </a>
+                        </li>
+                        <li class="menuItem">
+                            <a class="menuLink selected" href="satellites.html">
+                                <span class="menuBorder">Satellites</span>
+                            </a>
+                        </li>
+                        <li class="menuItem">
+                            <a class="menuLink" href="order.html">
+                                <span class="menuBorder">Order</span>
+                            </a>
+                        </li>
+                        <li class="menuItem">
+                            <a class="menuLink" href="contact.html">
+                                <span class="menuBorder">Contact</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                <div class="wrapper">
+                    <h1 class="pageHeading">Satellite Selection</h1>
+                    <div class="satellitesGallery">
+                    </div>
+                    <div class="pager">
+                        <button class="arrowLeft">&laquo;</button>
+                        <button class="arrowRight">&raquo;</button>
+                        <div class="pageNumber">Page 1 of 1</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="wrapper">
+                    <div class="textLeft">All Rights Reserved.</div>
+                    <div class="logoCenter"><img class="footerImage" src="logo.png" /></div>
+                    <div class="textRight">2016 &copy; Trinkets Inc.</div>
+                </div>
+            </div>
+            <div class="background"></div>
+        </div>
+    </body>
+</html>
