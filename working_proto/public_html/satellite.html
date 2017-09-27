@@ -23,14 +23,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
         <script src="jquery-1.12.1.min.js"></script>
         <script src="site-scripts.js"></script>
+
+        <script src="http://localhost/working_proto/public_html/highcharts/jquery-3.1.1.min.js"></script>
+        <script src="http://localhost/working_proto/public_html/highcharts/highcharts.js"></script>
+        <script src="http://localhost/working_proto/public_html/highcharts/modules/data.js"></script>
+        <script src="http://localhost/working_proto/public_html/highcharts/modules/exporting.js"></script>
+        <!-- Additional files for the Highslide popup effect -->
+        <script src="http://localhost/working_proto/public_html/highcharts/media/com_demo/js/highslide-full.min.js"></script>
+        <script src="http://localhost/working_proto/public_html/highcharts/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
+          <!--
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/data.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <!-- Additional files for the Highslide popup effect -->
+        <! Additional files for the Highslide popup effect
         <script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
         <script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
-          <!--   <link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" /> -->
+          <!   <link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" /> -->
 
     </head>
     <body>
@@ -184,10 +193,11 @@
                             tCon.style.display = 'none';
                         </script>
                       </div>
-                      <div>
+                      <div class="contentbutton">
                         <button class="buttonSel" onclick="showVoltage()"><span>Voltage </span></button>
                         <button class="buttonSel" onclick="showCurrent()"><span>Current </span></button>
                         <button class="buttonSel" onclick="showTemp()"><span>Temp </span></button>
+                        <button class="buttonSel" onclick="showHelth()"><span>Health </span></button>
 
                       </div>
                     </div>

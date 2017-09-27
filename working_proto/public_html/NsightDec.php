@@ -18,6 +18,20 @@ $milli = 0;
 $numOfFrames = 0;
 $tlmFRAMES = array();
 
+//Flags
+$EPS_Temperatures_and_Boot_Cause_F = False; //-->  bit 15 F_array[4]
+$EPS_Battery_Voltage_and_Current_F = False; //-->  bit 14 F_array[3]
+$nSIGHT_State_F = False;                   //-->  bit 4 F_array[2]
+$nSIGHT_State2_F = False;                  //-->  bit 3 F_array[1]
+$EPS_Currents_Out_1_F = False;             //-->  bit 2 F_array[0]
+$loopCompleteFlag = False;
+
+//Frame Counters
+$EPS_Temperatures_and_Boot_Cause_Frame_Num = 4; //-->  bit 15; F_array[4];Fnum 4
+$EPS_Battery_Voltage_and_Current_Frame_Num = 5; //-->  bit 14 ;F_array[3];Fnum 5
+$nSIGHT_State_Frame_Num = 1;                   //-->  bit 4; F_array[2];Fnum 1
+$nSIGHT_State2_Frame_Num = 2;                  //-->  bit 3; F_array[1];Fnum 2
+$EPS_Currents_Out_1_Frame_Num = 3;             //-->  bit 2; F_array[0];Fnum 3
 
 $filename = "LCI Message Bus_2017_7_4_16_31_45.tlm";
 $handle = fopen("LCI Message Bus_2017_7_4_16_31_45.tlm", "rb");
@@ -27,66 +41,114 @@ $loops=0;
   $contents = fread($handle, 10);
   $mask = bin2hex($contents);// hex mask
   $numOfFrames = substr_count(hexTobinStr($mask), '1'); // get number of frames
+  //echo (hexTobinStr($mask));
+
+  //setTelemetryFlags
+  $FlagArray = maskFlagSetter(hexTobinStr($mask));
+
 while (!feof($handle))
   {
 
 
     ///read in unixtime
     $temp = fread($handle, 4);// 4 bytes 32 bits uint
-    if($temp!=null){
-    $unixtimeBIN = hexTobinStrLSBF(bin2hex($temp));
-    $unixtime = bin2UintMSB($unixtimeBIN);
-
-    ///read in millisec
-    $temp = fread($handle, 2);// 2 bytes 16 bits uint
-
-    $milliBIN = hexTobinStrLSBF(bin2hex($temp));
-    $milli = bin2UintMSB($milliBIN);
-    //echo ("--4 bytes  LSBF(unix time)---->".$unixtime);
-    //echo("------<>-------");
-    //echo ("--2 bytes  LSBF(millisec)---->".$milli);
-    ///read in tlm frames
-    for ($j=0; $j < $numOfFrames; $j++)
+    if($temp!=null)
     {
-      //echo ("{--$j--}");
-      $temp = fread($handle, 6);// 6 bytes 32 bits uint
-      $tlmFRAMES[$j] = hexTobinStrLSBF(bin2hex($temp));
-      if ($j == 2)//current
-      {
-        $printArr = EpsCurrentOut($tlmFRAMES[$j] );
-        echo("------<>-------");
-        echo ("frame{".$j."}---->".$printArr[0]."mA ,".$printArr[1]."mA ," .$printArr[2]."mA");
-      }
-      else if ($j == 3)//temp and boot
-      {
-        $printArr = EpsTempBoost($tlmFRAMES[$j]);
-        echo("------<>------");
-        echo ("frame{".$j."}----> Temp1:".$printArr[0]."C ,"."Temp2:".$printArr[1]."C ,"."Temp3:".$printArr[2]."C ,"."BatTemp:".$printArr[3]."C ,"."Battery Mode: ".$printArr[5]);
-      }
-      else
-      {//temp and boot
-      /*  echo("------<>-------");
-        echo ("frame{".$j."}---->".$tlmFRAMES[$j]);*/
-      }
+        $unixtimeBIN = hexTobinStrLSBF(bin2hex($temp));
+        $unixtime = bin2UintMSB($unixtimeBIN);
+
+        ///read in millisec
+        $temp = fread($handle, 2);// 2 bytes 16 bits uint
+        $milliBIN = hexTobinStrLSBF(bin2hex($temp));
+        $milli = bin2UintMSB($milliBIN);
+
+        ///read in tlm frames
+        for ($j=1; $j <= $numOfFrames; $j++)
+        {
+          $temp = fread($handle, 6);// 6 bytes 32 bits uint
+          $tlmFRAMES[$j] = hexTobinStrLSBF(bin2hex($temp));
+
+          if ($j == 1 )//(int)$nSIGHT_State_Frame_Num)//$nSIGHT_State
+          {
+            if ($nSIGHT_State_F==True)
+            {
+              echo("------>".$j."nSIGHT_State<-------");
+              echo("nSIGHT_State");
+              echo("------>nSIGHT_State end<------");
+            }
+            else
+            {
+
+            }
+          }
+
+          elseif ($j ==2)//(int) $nSIGHT_State2_Frame_Num)//$nSIGHT_State2_Frame_Num
+          {
+            if ($nSIGHT_State2_F==True)
+            {
+              echo("------>".$j."nSIGHT_State2<------");
+              echo("nSIGHT_State2");
+              echo("------>nSIGHT_State2 end<------");
+            }
+            else
+            {
+
+            }
+          }
+          elseif ($j == 3)//(int)$EPS_Currents_Out_1_Frame_Num)//$EPS_Currents_Out_1
+          {
+            if ($EPS_Currents_Out_1_F==True)
+            {
+              $printArr = EpsCurrentOut($tlmFRAMES[$j]);
+              echo("------>".$j."EPS_Currents_Out_1<------");
+              echo(json_encode($printArr));
+              echo("------>EPS_Currents_Out_1 end<------");
+            }
+            else
+            {
+
+            }
+          }
+          elseif ($j ==4)//(int) $EPS_Temperatures_and_Boot_Cause_Frame_Num)//$EPS_Temperatures_and_Boot_Cause
+          {
+            if ($EPS_Temperatures_and_Boot_Cause_F==True)
+            {
+              $printArr = EpsTempBoost($tlmFRAMES[$j]);
+              echo("------>".$j."EPS_Temperatures_and_Boot_Cause<------");
+              echo(json_encode($printArr));
+              echo("------>EPS_Temperatures_and_Boot_Cause end<------");
+            }
+            else
+            {
+
+            }
+          }
+          elseif ($j == 5)//(int)$EPS_Battery_Voltage_and_Current_Frame_Num)//$EPS_Battery_Voltage_and_Current
+          {
+            if ($EPS_Battery_Voltage_and_Current_F==True)
+            {
+              $printArr = EPS_Battery_Voltage_and_Current($tlmFRAMES[$j]);
+              echo("------>".$j."EPS_Battery_Voltage_and_Current<------");
+              echo(json_encode($printArr));
+              echo("------>EPS_Battery_Voltage_and_Current end<------");
+            }
+            else
+            {
+
+            }
+          }
+          else
+          {
+            //echo "skip";
+          }
+        }
+
+
     }
-
-
-
-    $loops++;
-
   }
-}
-  $contents = fread($handle, 10);
-  echo("------<>------- loops--->");
-  echo($loops);
-fclose($handle);
+  $contents = fread($handle, 10);//read till end of file
+  fclose($handle);//close file
 
-  /*echo "mask hex--->".$mask;
-  echo("------<>-------");
-  echo "mask bin-->".hexTobinStr($mask);
-  */echo("------<>-------");
-
-  echo $numOfFrames;
 
 
 function hexTobinStr($hexa)
@@ -146,9 +208,9 @@ function bin2UintMSB($string)
 function EpsCurrentOut($stringIN)
 {
 
-  $current1Str ="";
-  $current2Str ="";
-  $current3Str ="";
+  $current1Str =""; // Current supplied to ADCS 5V.
+  $current2Str =""; //Current supplied to ADCS 3V3.
+  $current3Str =""; //Current supplied to GPS Receiver 3V3.
   $current1=0;
   $current2 =0;
   $current3 =0;
@@ -156,20 +218,16 @@ function EpsCurrentOut($stringIN)
   for ($i=0; $i <16; $i++)
   {
       $current1Str.=$stringIN[$i];
-
-
   }
 
   for ($i=16; $i <32; $i++)
   {
       $current2Str.=$stringIN[$i];
-
   }
 
   for ($i=32; $i <48; $i++)
   {
       $current3Str.=$stringIN[$i];
-
   }
 
 
@@ -183,66 +241,139 @@ function EpsCurrentOut($stringIN)
 
 function EpsTempBoost($stringIN)
 {
-  //echo("{---".$stringIN."---}");
-  $temp1Str ="";
-  $temp2Str ="";
-  $temp3Str ="";
-  $temp4Str ="";
-  $temp5Str ="";
-  $batModStr ="";
-  $temp1=0;
-  $temp2 =0;
-  $temp3 =0;
-  $temp4 =0;
-  $temp5 =0;
-  $batMod =0;
+  $ConTemp1Str ="";
+  $ConTemp2Str ="";
+  $ConTemp3Str ="";
+  $BatTempStr ="";
+  $resetStr ="";
+  $batModStr =""; // 0->nominal  1->UnderVoltage 2->Overvoltage
+  $temp1=0;       //Converter 1 temp
+  $temp2 =0;      //Converter 2 temp
+  $temp3 =0;      //Converter 3 temp
+  $temp4 =0;      //Battery temp
+  $resetCause =0;      //resetCause
+  $batMod =0;     //BatteryMode
 
   for ($i=0; $i <8; $i++)//Battery mode
   {
       $batModStr.=$stringIN[$i];
   }
-  //echo("{".$temp6Str."}");
-
   for ($i=8; $i <16; $i++)//Cause of last EPS reset
   {
-      $temp5Str.=$stringIN[$i];
+      $resetStr.=$stringIN[$i];
   }
-//echo("{".$temp5Str."}");
   for ($i=16; $i <24; $i++)// temp Battery
   {
-      $temp4Str.=$stringIN[$i];
+      $BatTempStr.=$stringIN[$i];
   }
   for ($i=24; $i <32; $i++)//temp 3
   {
-      $temp3Str.=$stringIN[$i];
+      $ConTemp3Str.=$stringIN[$i];
   }
   for ($i=32; $i <40; $i++)//temp 2
   {
-      $temp2Str.=$stringIN[$i];
+      $ConTemp2Str.=$stringIN[$i];
   }
   for ($i=40; $i <48; $i++)//temp 1
   {
-      $temp1Str.=$stringIN[$i];
+      $ConTemp1Str.=$stringIN[$i];
   }
-  //echo("<---{".$temp1Str."} , "."{".$temp2Str."} , "."{".$temp3Str."} , "."{".$temp4Str."} , "."{".$temp5Str."} , "."{".$temp6Str."}--->");
 
-  $temp1=bin2IntMSB($temp1Str);
-  $temp2=bin2IntMSB($temp2Str);
-  $temp3=bin2IntMSB($temp3Str);
-  $temp4=bin2IntMSB($temp4Str);
-  $temp5=bin2IntMSB($temp5Str);
+  $temp1=bin2IntMSB($ConTemp1Str);
+  $temp2=bin2IntMSB($ConTemp2Str);
+  $temp3=bin2IntMSB($ConTemp3Str);
+  $temp4=bin2IntMSB($BatTempStr);
+  $resetCause=bin2IntMSB($resetStr);
   $batMod=bin2IntMSB($batModStr);
 
-  return array($temp1,$temp2,$temp3,$temp4,$temp5,$batMod);
+  return array($temp1,$temp2,$temp3,$temp4,$resetCause,$batMod);
 
 }
 
-/* frames
-1. nsight state
-2. nSIGHT State2
-3. EPS Currents Out 1
-4. EPS Temperatures and Boot Cause
-5. EPS Battery Voltage and Current
+function EPS_Battery_Voltage_and_Current($stringIN)
+{
+
+  $Batery_Voltage_Str =""; // Battery voltage.
+  $Current_from_boost_Converters_Str =""; //Current from boost converters.
+  $Current_Out_Of_Battery_Str =""; //Current out of battery
+  $Batery_Voltage =0; // Battery voltage.
+  $Current_from_boost_Converters =0; //Current from boost converters.
+  $Current_Out_Of_Battery =0; //Current out of battery
+
+  for ($i=0; $i <16; $i++)
+  {
+      $Batery_Voltage_Str.=$stringIN[$i];
+  }
+
+  for ($i=16; $i <32; $i++)
+  {
+      $Current_from_boost_Converters_Str.=$stringIN[$i];
+  }
+
+  for ($i=32; $i <48; $i++)
+  {
+      $Current_Out_Of_Battery_Str.=$stringIN[$i];
+  }
+
+
+  $Batery_Voltage=bin2UintMSB($Batery_Voltage_Str);
+  $Current_from_boost_Converters=bin2UintMSB($Current_from_boost_Converters_Str);
+  $Current_Out_Of_Battery=bin2UintMSB($Current_Out_Of_Battery_Str);
+
+  return array($Batery_Voltage,$Current_from_boost_Converters,$Current_Out_Of_Battery);
+
+}
+function maskFlagSetter($mask_IN)
+{
+  //$returningArr = array(False,False,False,False,False);
+
+  if(substr($mask_IN,13,1)=='1')
+  {
+    $GLOBALS['EPS_Battery_Voltage_and_Current_F'] = True;
+    $GLOBALS['EPS_Battery_Voltage_and_Current_Frame_Num']= (int)substr_count(substr($mask_IN,0,13), '1');
+    //echo("b4 14->".json_encode($GLOBALS['EPS_Battery_Voltage_and_Current_Frame_Num'])." ; ");
+  }
+  if(substr($mask_IN,14,1)=='1')
+  {
+    $GLOBALS['EPS_Temperatures_and_Boot_Cause_F'] = True;
+    $GLOBALS['EPS_Temperatures_and_Boot_Cause_Frame_Num']= (int)substr_count(substr($mask_IN,0,14), '1');
+    //echo("b4 15->".json_encode($GLOBALS['EPS_Temperatures_and_Boot_Cause_Frame_Num'])." ; ");
+  }
+  if(substr($mask_IN,1,1)=='1')
+  {
+    $GLOBALS['EPS_Currents_Out_1_F'] = True;
+    $GLOBALS['EPS_Currents_Out_1_Frame_Num'] = (int)substr_count(substr($mask_IN,0,1), '1');
+    //echo("b4 2->".json_encode($GLOBALS['EPS_Currents_Out_1_Frame_Num'])." ; ");
+  }
+  if(substr($mask_IN,2,1)=='1')
+  {
+    $GLOBALS['nSIGHT_State2_F']=True;
+    $GLOBALS['nSIGHT_State2_Frame_Num']= (int)substr_count(substr($mask_IN,0,2), '1');
+    //echo("b4 3->".json_encode($GLOBALS['EPS_Currents_Out_1_Frame_Num'])." ; ");
+  }
+  if(substr($mask_IN,3,1)=='1')
+  {
+    $GLOBALS['nSIGHT_State_F']=True;
+    $GLOBALS['nSIGHT_State_Frame_Num']= (int)substr_count(substr($mask_IN,0,3), '1');
+    //echo("b4 4->".json_encode($GLOBALS['nSIGHT_State_Frame_Num'])." ; ");
+  }
+  //return $returningArr;
+}
+function frameCounter()
+{
+
+}
+function insertRec()
+{
+
+}
+
+/* frames order
+1. nsight state                    -->  bit 4
+2. nSIGHT State2                   -->  bit 3
+3. EPS Currents Out 1              -->  bit 2
+4. EPS Temperatures and Boot Cause -->  bit 15
+5. EPS Battery Voltage and Current -->  bit 14
 6. Command Schedule Information
 7. FIPEX Telemetry
 8. Current ADCS State
