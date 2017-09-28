@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Satellites Inc.</title>
+        <meta name="msapplication-tap-highlight" content="no">
+        <link rel="stylesheet" type="text/css" href="client.css">
+        <meta http-equiv="cleartype" content="on">
+        <meta name="MobileOptimized" content="320">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <script src="jquery-1.12.1.min.js"></script>
+        <script src="site-scripts.js"></script>
+
+        <script src="http://localhost/working_proto/public_html/highcharts/jquery-3.1.1.min.js"></script>
+        <script src="http://localhost/working_proto/public_html/highcharts/highcharts.js"></script>
+        <script src="http://localhost/working_proto/public_html/highcharts/modules/data.js"></script>
+        <script src="http://localhost/working_proto/public_html/highcharts/modules/exporting.js"></script>
+        <!-- Additional files for the Highslide popup effect -->
+        <script src="http://localhost/working_proto/public_html/highcharts/media/com_demo/js/highslide-full.min.js"></script>
+        <script src="http://localhost/working_proto/public_html/highcharts/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
+          <!--
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/data.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <! Additional files for the Highslide popup effect
+        <script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
+        <script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
+          <!   <link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" /> -->
+
+    </head>
+    <body>
+    <script>
+    var oReq = new XMLHttpRequest(); //New request object
+    oReq.onload = function()
+    {
+      var csv = this.responseText;
+      Highcharts.chart('containerVolt',
+               {
+                 data: {csv: csv},
+                 chart: {type: 'spline'},
+                 title: {text: 'Battery Volage'},
+                 xAxis: {},
+                 yAxis: { title: {text: "Volage"}},
+                 tooltip: {shared: true,crosshairs: true},
+                 series: [{ name: 'Voltage',lineWidth: 4,marker: {radius: 6} }]
+                });
+
+     };
+
+     var cReq = new XMLHttpRequest(); //New request object
+     cReq.onload = function()
+     {
+       var csvC = this.responseText;
+       Highcharts.chart('containerCurrent',
+                {
+                  data: {csv: csvC},
+                  chart: {type: 'spline'},
+                  title: {text: 'Current'},
+                  xAxis: {},
+                  yAxis: { title: {text: "mA"}},
+                  tooltip: {shared: true,crosshairs: true},
+
+                  series: [{ type: 'spline',name: 'Current_In',color:'green',pointPadding: 0 },
+                           { type: 'spline',name: 'Current_Out',color:'red',pointPadding: 0}
+                           ]
+                 });
+
+      };
+      var cOutReq = new XMLHttpRequest(); //New request object
+      cOutReq.onload = function()
+      {
+        var csvCout = this.responseText;
+        Highcharts.chart('containerCurrentOut',
+                 {
+                   data: {csv: csvCout},
+                   chart: {type: 'spline'},
+                   title: {text: 'Current Out Details'},
+                   xAxis: {},
+                   yAxis: { title: {text: "mA"}},
+                   tooltip: {shared: true,crosshairs: true},
+
+                   series: [{ type: 'spline',name: 'toADCS5V',color:'green',pointPadding: 0 },
+                            { type: 'spline',name: 'toADCS3V3',color:'red',pointPadding: 0},
+                            { type: 'spline',name: 'toGPS',color:'blue',pointPadding: 0}
+                            ]
+                  });
+
+       };
+      var tReq = new XMLHttpRequest(); //New request object
+      tReq.onload = function()
+      {
+        var csvT = this.responseText;
+        Highcharts.chart('containerTemp',
+                 {
+                   data: {csv: csvT},
+                   chart: {type: 'spline'},
+                   title: {text: 'Temperature'},
+                   xAxis: {},
+                   yAxis: { title: {text: "C"}},
+                   tooltip: {shared: true,crosshairs: true},
+                   series: [{ name: 'Battery Temp',lineWidth: 4,marker: {radius: 6} },
+                            { name: 'Converter1 Temp',lineWidth: 4,marker: {radius: 6} },
+                            { name: 'Converter2 Temp',lineWidth: 4,marker: {radius: 6}},
+                            { name: 'Converter3 Temp',lineWidth: 4,marker: {radius: 6}}
+                           ]
+                  });
+
+       };
+
+       oReq.open("get", "http://localhost/working_proto/public_html/graphs.php?sID=sat1&details=Voltage", true);
+       cReq.open("get", "http://localhost/working_proto/public_html/graphs.php?sID=sat1&details=current", true);
+       cOutReq.open("get", "http://localhost/working_proto/public_html/graphs.php?sID=sat1&details=currentOut", true);
+       tReq.open("get", "http://localhost/working_proto/public_html/graphs.php?sID=sat1&details=temperature", true);
+
+       oReq.send();
+       cReq.send();
+       cOutReq.send();
+       tReq.send();
+      </script>
+
+      <script>
+          function showVoltage()
+          {
+            var vCon = document.getElementById('containerVolt');
+            var cCon = document.getElementById('containerCurrent');
+            var cOutCon = document.getElementById('containerCurrentOut');
+            var tCon = document.getElementById('containerTemp');
+            vCon.style.display = 'block';
+            cCon.style.display = 'none';
+            cOutCon.style.display = 'none';
+            tCon.style.display = 'none';
+
+
+          }
+          function showCurrent()
+          {
+            var vCon = document.getElementById('containerVolt');
+            var cCon = document.getElementById('containerCurrent');
+            var cOutCon = document.getElementById('containerCurrentOut');
+            var tCon = document.getElementById('containerTemp');
+            cCon.style.display = 'block';
+            cOutCon.style.display = 'none';
+            vCon.style.display = 'none';
+            tCon.style.display = 'none';
+
+
+
+          }
+          function showCurrentOut()
+          {
+            var vCon = document.getElementById('containerVolt');
+            var cCon = document.getElementById('containerCurrent');
+            var cOutCon = document.getElementById('containerCurrentOut');
+            var tCon = document.getElementById('containerTemp');
+            cOutCon.style.display = 'block';
+            cCon.style.display = 'none';
+            vCon.style.display = 'none';
+            tCon.style.display = 'none';
+
+
+          }
+          function showTemp()
+          {
+            var vCon = document.getElementById('containerVolt');
+            var cCon = document.getElementById('containerCurrent');
+            var cOutCon = document.getElementById('containerCurrentOut');
+            var tCon = document.getElementById('containerTemp');
+            tCon.style.display = 'block';
+            vCon.style.display = 'none';
+            cCon.style.display = 'none';
+            cOutCon.style.display = 'none';
+
+
+          }
+
+      </script>
+        <div class="client Satellites">
+            <div class="header">
+                <div class="wrapper">
+                    <img class="headerImage" src="logo.png" />
+                    <img class="headerImageText" src="logo_text.png" />
+                </div>
+            </div>
+            <div class="menu">
+                <div class="wrapper">
+                    <button class="menuToggle">
+                        <span class="menuButton top"></span>
+                        <span class="menuButton mid"></span>
+                        <span class="menuButton bot"></span>
+                    </button>
+                    <ul class="menuList">
+                        <li class="menuItem">
+                            <a class="menuLink" href="home.html">
+                                <span class="menuBorder">Home</span>
+                            </a>
+                        </li>
+                        <li class="menuItem">
+                            <a class="menuLink" href="satellites.html">
+                                <span class="menuBorder">Satellites</span>
+                            </a>
+                        </li>
+                        <li class="menuItem">
+                            <a class="menuLink" href="order.html">
+                                <span class="menuBorder">Order</span>
+                            </a>
+                        </li>
+                        <li class="menuItem">
+                            <a class="menuLink" href="contact.html">
+                                <span class="menuBorder">Contact</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                <div class="wrapper">
+                    <h1 class="pageHeading">View Satellite:</h1>
+                      <div class="satellitesDetails">
+                        <div id="containerVolt" style="min-width: 400px;height: 380px; margin: 0 auto"></div>
+                        <div id="containerCurrent" style="min-width: 400px;height: 380px; margin: 0 auto"></div>
+                        <div id="containerCurrentOut" style="min-width: 400px;height: 380px; margin: 0 auto"></div>
+                        <div id="containerTemp" style="min-width: 400px;height: 380px; margin: 0 auto"></div>
+                        <script>
+                            var cCon = document.getElementById('containerCurrent');
+                            var tCon = document.getElementById('containerTemp');
+                            var cOutCon = document.getElementById('containerCurrentOut');
+                            cCon.style.display = 'none';
+                            cOutCon.style.display ='none';
+                            tCon.style.display = 'none';
+                        </script>
+                      </div>
+                      <div class="contentbutton">
+                        <button class="buttonSel" onclick="showVoltage()"><span>Voltage </span></button>
+                        <button class="buttonSel" onclick="showCurrent()"><span>Current </span></button>
+                        <button class="buttonSel" onclick="showCurrentOut()"><span>CurrentDetails </span></button>
+                        <button class="buttonSel" onclick="showTemp()"><span>Temp </span></button>
+                        <!--<button class="buttonSel" onclick="showCurrentOut()"><span>Health </span></button>-->
+
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer">
+                <div class="wrapper">
+                    <div class="textLeft">All Rights Reserved.</div>
+                    <div class="logoCenter"><img class="footerImage" src="logo.png" /></div>
+                    <div class="textRight">2017 &copy; Satellites Inc.</div>
+                </div>
+            </div>
+            <div class="background"></div>
+        </div>
+    </body>
+</html>

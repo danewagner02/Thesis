@@ -1,0 +1,95 @@
+/**
+ * Practical 1
+ * RW334 Prac Memos
+ * Stellenbosch University
+ *
+ * Author: Robert Sandell
+ *         16726723@sun.ac.za
+ *
+ * Description:
+ *      A style sheet for the client 
+ *      home page. Adds styles for the
+ *      set of top products images, as
+ *      well as, adding padding unique
+ *      to the heading on the home page.
+ **/
+
+
+.topProducts {
+    .gradient(@accent-fg, average(@accent-fg, @accent-bg));
+    width: 180px;
+    padding: 10px;
+    float: right;
+    margin: 0 0 0 25px;
+    border-radius: 2px;
+    .materialShadow;
+
+    .productsTitle {
+        font-size: 15px;
+        padding: 0 0 7px 0;
+        color: @content-fg;
+    }
+
+    .productImages {
+        overflow: hidden;
+        max-height: 500px;
+
+        .productImage {
+            display: block;
+            width: 180px;
+            height: 135px;
+            margin: 0 0 5px 0;
+            line-height: 0;
+            .materialShadow;
+
+            -webkit-transition: width 0.5s ease-in-out, height 0.5s ease-in-out, margin 0.5s ease-in-out;
+               -moz-transition: width 0.5s ease-in-out, height 0.5s ease-in-out, margin 0.5s ease-in-out;
+                 -o-transition: width 0.5s ease-in-out, height 0.5s ease-in-out, margin 0.5s ease-in-out;
+                    transition: width 0.5s ease-in-out, height 0.5s ease-in-out, margin 0.5s ease-in-out;
+
+            &.hidden {
+                margin: 0 0px 0px 0 !important;
+                width: 180px !important;
+                height: 0px !important;
+            }
+        }
+    }
+}
+
+
+.home .pageHeading {
+    margin-right: 230px !important;
+}
+
+
+@media only screen and (max-width: 700px) {
+    .home .pageHeading {
+        margin-right: 0 !important;
+    }
+
+    .topProducts {
+        width: 100%;
+        white-space: nowrap;
+        box-sizing: border-box;
+        margin: 0 0 20px 0;
+
+        .productImages {
+
+            .productImage {
+                display: inline-block;
+                margin: 0 5px 0 0;
+
+                &.hidden {
+                    margin: 0 0px 0px 0 !important;
+                    width: 0px !important;
+                    height: 135px !important;
+                }
+            }
+        }
+    }
+}
+
+
+/**
+ * EOF
+ **/
